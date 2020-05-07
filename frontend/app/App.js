@@ -8,7 +8,7 @@ export default function App() {
         dispatch(setBusy());
     })
     return (
-        <div>
+        <div className="app-container">
             This is App.js
         </div>
     )
