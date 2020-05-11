@@ -2,20 +2,28 @@ import {
     APP_BUSY,
     SET_API_URL,
     SET_API_HEADER,
-    SET_DATA_PATH
+    SET_DATA_PATH,
+    SET_NAME_FOR_REQUEST,
+    SET_TABLE_TO_SAVE_API_DATA,
+    SET_API_CONFIG
 } from './actionsApp';
 import { globalConfig } from '@airtable/blocks';
+import {
+    getFirstRequest
+} from './utils/serializeRequests';
 
 const url = globalConfig.get(['apiConfig', 'url']) || '';
 const headers = globalConfig.get(['apiConfig', 'headers']) || [];
 const dataPath = globalConfig.get(['apiConfig', 'dataPath']) || [];
 
+// globalConfig.setAsync(['savedRequests'], undefined) || [];
+const savedRequest = {}; // getFirstRequest();
+console.log('savedRequest', savedRequest);
+
 const defaultState = {
     busy: false,
     apiConfig: {
-        url,
-        headers,
-        dataPath
+        ...savedRequest
     }
 }
 
@@ -25,6 +33,15 @@ export default function auth(state = defaultState, action) {
             return {
                 ...state,
                 busy: action.payload
+            }
+        }
+
+        case SET_API_CONFIG: {
+            return {
+                ...state,
+                apiConfig: {
+                    ...action.payload
+                }
             }
         }
 
@@ -52,8 +69,32 @@ export default function auth(state = defaultState, action) {
             }
         }
 
+        case SET_NAME_FOR_REQUEST: {
+            const apiConfig = state.apiConfig || {};
+            apiConfig.requestName = action.payload;
+
+            return {
+                ...state,
+                apiConfig: {
+                    ...apiConfig
+                }
+            }
+        }
+
+        case SET_TABLE_TO_SAVE_API_DATA: {
+            const apiConfig = state.apiConfig || {};
+            apiConfig.tableToSaveApiData = action.payload;
+
+            return {
+                ...state,
+                apiConfig: {
+                    ...apiConfig
+                }
+            }
+        }
+
         case SET_API_HEADER: {
-            const headers = state.apiConfig.headers;
+            const headers = state.apiConfig.headers || [];
             let {
                 value,
                 index,
@@ -78,7 +119,7 @@ export default function auth(state = defaultState, action) {
 
             // Set new headers in globalConfig
             // This should not be in reducer
-            globalConfig.setAsync(['apiConfig', 'headers'], headers)
+            // globalConfig.setAsync(['apiConfig', 'headers'], headers)
 
             return {
                 ...state,

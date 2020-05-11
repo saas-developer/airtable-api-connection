@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchData } from './actionsApp';
 import ApiUrl from './components/ApiUrl';
@@ -6,8 +6,13 @@ import ApiHeader from './components/ApiHeaders';
 import TableToSaveApiData from './components/TableToSaveApiData';
 import Button from 'react-bootstrap/Button';
 import DataPath from './components/DataPath';
+import ApiConfig from './components/ApiConfig';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
+import SavedRequests from './components/savedRequests/SavedRequests';
 
 export default function App() {
+    const [activeTab, setActiveTab] = useState('requests');
     const dispatch = useDispatch()
     const getData = () => {
         dispatch(fetchData());
@@ -15,14 +20,32 @@ export default function App() {
 
     return (
         <div className="container app-container">
-            <ApiUrl />
-            <ApiHeader />
-            <TableToSaveApiData />
-            <DataPath />
-            <Button
-                type="button"
-                onClick={getData}
-            >Fetch Data</Button>
+            <h2>Welcome to Api Connector</h2>
+            <Tabs
+                activeKey={activeTab}
+                onSelect={(k) => setActiveTab(k)}
+            >
+                <Tab
+                    eventKey="requests"
+                    title="Requests"
+                >
+                    <SavedRequests
+                        setActiveTab={setActiveTab}
+                    />
+                </Tab>
+                <Tab
+                    eventKey="api"
+                    title="Api"
+                >
+                    <ApiConfig />
+                </Tab>
+                <Tab
+                    eventKey="contact"
+                    title="Contact"
+                >
+                    Stuff
+                </Tab>
+            </Tabs>
         </div>
     )
 }
