@@ -5,14 +5,13 @@
 > Then check out my course on [Udemy](https://www.udemy.com/course/the-complete-airtable-custom-blocks-development-course/)
 ***
 
-# Block Screenshot
-
-![Api Connection](ApiConnection.png)
-
-
 # API Connection
 
 API Connection is a Custom Block developed on the Airtable platform.
+
+## Block Screenshot
+
+![Api Connection](ApiConnection.png)
 
 ## What does it do?
 
