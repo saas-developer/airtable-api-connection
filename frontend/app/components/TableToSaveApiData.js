@@ -25,12 +25,15 @@ export default function TableToSaveApiData() {
         <div className="">
             <Form>
               <Form.Group controlId="apiForm.ControlInput1">
-                <Form.Label>Which table to save data</Form.Label>
-                <TablePicker
-                    onChange={newTable => handleTableChange(newTable.id)}
-                    width="320px"
-                    table={table}
-                />
+                <Form.Label>Table to save data</Form.Label>
+                <div>
+                    <TablePicker
+                        className="table-picker"
+                        onChange={newTable => handleTableChange(newTable.id)}
+                        width="320px"
+                        table={table}
+                    />
+                </div>
                 </Form.Group>
             </Form>
         </div>

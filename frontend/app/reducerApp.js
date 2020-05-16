@@ -12,13 +12,15 @@ import {
     getFirstRequest
 } from './utils/serializeRequests';
 
-const url = globalConfig.get(['apiConfig', 'url']) || '';
-const headers = globalConfig.get(['apiConfig', 'headers']) || [];
-const dataPath = globalConfig.get(['apiConfig', 'dataPath']) || [];
+// const url = globalConfig.get(['apiConfig', 'url']) || '';
+// const headers = globalConfig.get(['apiConfig', 'headers']) || [];
 
-// globalConfig.setAsync(['savedRequests'], undefined) || [];
+function deleteGlobalConfig() {
+    globalConfig.setAsync(['savedRequests'], undefined) || [];
+}
+// deleteGlobalConfig();
+
 const savedRequest = {}; // getFirstRequest();
-console.log('savedRequest', savedRequest);
 
 const defaultState = {
     busy: false,
@@ -48,18 +50,6 @@ export default function auth(state = defaultState, action) {
         case SET_API_URL: {
             const apiConfig = state.apiConfig || {};
             apiConfig.url = action.payload;
-
-            return {
-                ...state,
-                apiConfig: {
-                    ...apiConfig
-                }
-            }
-        }
-
-        case SET_DATA_PATH: {
-            const apiConfig = state.apiConfig || {};
-            apiConfig.dataPath = action.payload;
 
             return {
                 ...state,

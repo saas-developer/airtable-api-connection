@@ -5,7 +5,6 @@ import ApiUrl from './components/ApiUrl';
 import ApiHeader from './components/ApiHeaders';
 import TableToSaveApiData from './components/TableToSaveApiData';
 import Button from 'react-bootstrap/Button';
-import DataPath from './components/DataPath';
 import ApiConfig from './components/ApiConfig';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
@@ -20,7 +19,8 @@ export default function App() {
 
     return (
         <div className="container app-container">
-            <h2>Welcome to Api Connector</h2>
+            <h2 className="title">Api Connector</h2>
+            <hr></hr>
             <Tabs
                 activeKey={activeTab}
                 onSelect={(k) => setActiveTab(k)}

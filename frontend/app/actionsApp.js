@@ -58,16 +58,6 @@ export function setApiHeader(payload) {
     }
 }
 
-export function setDataPath(payload) {
-    const dataPath = payload;
-    // globalConfig.setAsync(['apiConfig', 'dataPath'], dataPath)
-
-    return {
-        type: SET_DATA_PATH,
-        payload
-    }
-}
-
 export function setRequestName(payload) {
     return {
         type: SET_NAME_FOR_REQUEST,
@@ -84,13 +74,9 @@ export function setTableToSaveApiData(payload) {
 
 export function saveRequest() {
     return (dispatch, getState) => {
-        debugger;
         const apiConfig = getState().app.apiConfig;
 
         console.log('apiConfig', apiConfig);
-
-        // const serializedApiConfig = apiConfig;
-        // globalConfig.setAsync(['savedRequests', 'config'], serializedApiConfig);
 
         saveRequestToGlobalConfigSync(apiConfig);
 
@@ -107,13 +93,20 @@ export function fetchData() {
         const {
             url,
             headers,
-            dataPath
+            tableToSaveApiData
         } = apiConfig;
 
         return fetch(url)
             .then((response) => {
                 if (!response.ok) {
-                  return response.json().then(err => {throw err});
+                    if (isJson(response)) {
+                        return response.json().then(err => {throw err});
+                    } else {
+                        throw new Error({
+                            message: 'Response is not json',
+                            error: response
+                        })
+                    }
                 }
                 console.log('response', response);
                 return response.json();
@@ -124,7 +117,7 @@ export function fetchData() {
                 const parsedJson = parseJSONObject_(resultsJson)
                 console.log('parsedJson', parsedJson);
                 const formattedRecords = transformDataToAirtableRecordFormat(parsedJson);
-                saveDataToTable(formattedRecords);
+                saveDataToTable(formattedRecords, tableToSaveApiData);
 
                 return resultsJson;
             })
@@ -172,15 +165,17 @@ function isPrimitive(test) {
     return (test !== Object(test));
 };
 
-export async function saveDataToTable({ headers, records }) {
-    const tableId = globalConfig.get(['apiConfig', 'tableToSaveApiData'])
-    if (_isEmpty(tableId) || _isEmpty(records)) {
+export async function saveDataToTable(formattedRecords, tableToSaveApiData) {
+    const {
+        headers,
+        records
+    } = formattedRecords;
+
+    if (!tableToSaveApiData) {
         return;
     }
 
-
-
-    const table = base.getTableById(tableId);
+    const table = base.getTableById(tableToSaveApiData);
     if (_isEmpty(table)) {
         return;
     }
@@ -195,7 +190,6 @@ export async function saveDataToTable({ headers, records }) {
     }
 
     let dataToSave = records;
-    debugger;
 
     // if (!Array.isArray(data)) {
     //     dataToSave = [data];
@@ -209,5 +203,12 @@ export async function saveDataToTable({ headers, records }) {
     }
 }
 
-
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 
