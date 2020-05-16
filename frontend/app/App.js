@@ -19,7 +19,7 @@ export default function App() {
 
     return (
         <div className="container app-container">
-            <h2 className="title">Api Connector</h2>
+            <h2 className="title">Api Connection</h2>
             <hr></hr>
             <Tabs
                 activeKey={activeTab}
