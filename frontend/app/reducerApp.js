@@ -15,6 +15,9 @@ import {
 // const url = globalConfig.get(['apiConfig', 'url']) || '';
 // const headers = globalConfig.get(['apiConfig', 'headers']) || [];
 
+// const savedRequests = globalConfig.get('savedRequests');
+// console.log('savedRequests', savedRequests);
+
 function deleteGlobalConfig() {
     globalConfig.setAsync(['savedRequests'], undefined) || [];
 }
