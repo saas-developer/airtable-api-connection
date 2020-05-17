@@ -87,6 +87,21 @@ export function saveRequest() {
     }
 }
 
+function getHeaders(headers) {
+    const newHeaders = {};
+
+    for (let i = 0; i < headers.length; i++) {
+        const header = headers[i] || {};
+        const key = header.key;
+        const value = header.value;
+
+        if (key && value) {
+            newHeaders[key] = value;
+        }
+    }
+    return newHeaders;
+}
+
 export function fetchData() {
     return (dispatch, getState) => {
         const apiConfig = getState().app.apiConfig;
@@ -96,8 +111,18 @@ export function fetchData() {
             tableToSaveApiData
         } = apiConfig;
 
-        return fetch(url)
-            .then((response) => {
+        const newHeaders = getHeaders(headers);
+        let promise;
+
+        if (_isEmpty(newHeaders)) {
+            promise = fetch(url);
+        } else {
+            promise = fetch(url, {
+                headers: newHeaders
+            });
+        }
+
+        promise.then((response) => {
                 if (!response.ok) {
                     if (isJson(response)) {
                         return response.json().then(err => {throw err});
@@ -125,6 +150,7 @@ export function fetchData() {
                 console.log('error ', error);
                 throw error;
             });
+        return promise;
     }
 }
 
