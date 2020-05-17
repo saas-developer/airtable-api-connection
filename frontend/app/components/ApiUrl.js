@@ -16,7 +16,7 @@ export default function ApiUrl() {
         <div className="api-url">
             <Form>
               <Form.Group controlId="apiForm.ControlInput1">
-                <Form.Label>Api URL</Form.Label>
+                <Form.Label>Api URL (HTTPS only)</Form.Label>
                 <Form.Control
                     type="text"
                     placeholder="https://www.google.com"
