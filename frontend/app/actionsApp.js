@@ -4,6 +4,7 @@ import _isEmpty from 'lodash/isEmpty';
 import _map from 'lodash/map';
 import _chunk from 'lodash/chunk';
 import _keys from 'lodash/keys';
+import _filter from 'lodash/filter';
 import { base } from '@airtable/blocks';
 import { FieldType } from '@airtable/blocks/models';
 import { parseJSONObject_ } from './utils/importJSONGoogleAppScript';
@@ -76,9 +77,16 @@ export function saveRequest() {
     return (dispatch, getState) => {
         const apiConfig = getState().app.apiConfig;
 
-        console.log('apiConfig', apiConfig);
+        const headers = _filter(apiConfig.headers, (header) => {
+            const key = header.key;
+            const value = header.value;
+            return (key && value);
+        });
+
+        apiConfig.headers = headers;
 
         saveRequestToGlobalConfigSync(apiConfig);
+        dispatch(setApiConfig(apiConfig));
 
         return {
             type: SAVE_REQUEST

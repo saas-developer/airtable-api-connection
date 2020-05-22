@@ -96,23 +96,10 @@ export default function auth(state = defaultState, action) {
             if (value === '') {
                 value = undefined;
             }
-
-            if (index === headers.length) {
-                // This is new entry
-                // TODO: Find a better way than using -1
-                headers.push({
-                    key: '',
-                    value: ''
-                })
-            }
             headers[index][type] = value;
 
             const apiConfig = state.apiConfig;
             apiConfig.headers = [...headers];
-
-            // Set new headers in globalConfig
-            // This should not be in reducer
-            // globalConfig.setAsync(['apiConfig', 'headers'], headers)
 
             return {
                 ...state,

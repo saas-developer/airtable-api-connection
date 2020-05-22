@@ -26,6 +26,22 @@ export default function ApiHeader() {
 
     const headers = apiConfig.headers || [];
 
+    if (headers.length > 0) {
+        const lastKey = headers[headers.length - 1].key;
+        const lastValue = headers[headers.length - 1].value;
+        if (!(lastKey === '' && lastValue === '')) {
+            headers.push({
+                key: '',
+                value: ''
+            })
+        }
+    } else {
+        headers.push({
+            key: '',
+            value: ''
+        })
+    }
+
     return (
         <div className="api-url">
             <Form.Label>Api Header</Form.Label>
@@ -54,24 +70,6 @@ export default function ApiHeader() {
                     )
                 })
             }
-            <Form.Row key={headers.length}>
-                <Form.Group key={`${headers.length}-0}`} as={Col} controlId="formGridEmail">
-                    <Form.Control
-                        type="text"
-                        placeholder="https://www.google.com"
-                        onChange={(value) => handleHeaderChange(value, headers.length, 'key')}
-                        value={''}
-                    />
-                </Form.Group>
-                <Form.Group key={`${headers.length}-1}`} as={Col} controlId="formGridEmail">
-                    <Form.Control
-                        type="text"
-                        placeholder="https://www.google.com"
-                        onChange={(value) => handleHeaderChange(value, headers.length, 'value')}
-                        value={''}
-                    />
-                </Form.Group>
-            </Form.Row>
         </div>
     )
 }
