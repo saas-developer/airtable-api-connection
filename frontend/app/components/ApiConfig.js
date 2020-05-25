@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchData, saveRequest } from '../actionsApp';
 import ApiUrl from './ApiUrl';
 import ApiHeader from './ApiHeaders';
@@ -7,10 +7,18 @@ import TableToSaveApiData from './TableToSaveApiData';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import RequestName from './RequestName';
+import UserApiStatus from './UserApiStatus';
+import AirtableApiStatus from './AirtableApiStatus';
 import _isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
 
 export default function ApiConfig() {
+    const userApiStatus = useSelector((state) => {
+        return state.app.userApiStatus
+    });
+    const airtableApiStatus = useSelector((state) => {
+        return state.app.airtableApiStatus
+    });
     const dispatch = useDispatch();
     const [error, setError] = useState(null)
     const [busy, setBusy] = useState(false);
@@ -50,9 +58,19 @@ export default function ApiConfig() {
                 <Alert
                     onClose={() => setError(null)}
                     variant="danger"
-                >{
-                    !_isEmpty(errorMessage) ? errorMessage : 'An unknown error occured'
-                }</Alert>
+                >
+                    <>
+                        <div>
+                            {
+                                !_isEmpty(errorMessage) ? errorMessage : 'An unknown error occured'
+                            }
+                        </div>
+                        <div>
+                            Does the API support CORS?
+                        </div>
+                    </>
+
+                </Alert>
             </div>
         )
     }
@@ -63,6 +81,9 @@ export default function ApiConfig() {
             <ApiHeader />
             <TableToSaveApiData />
             <RequestName />
+            <UserApiStatus userApiStatus={userApiStatus}/>
+            <AirtableApiStatus airtableApiStatus={airtableApiStatus} />
+            
             <Button
                 type="button"
                 onClick={getData}

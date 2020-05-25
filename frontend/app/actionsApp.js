@@ -18,6 +18,13 @@ export const SAVE_REQUEST = 'SAVE_REQUEST';
 export const SET_NAME_FOR_REQUEST = 'SET_NAME_FOR_REQUEST';
 export const SET_API_CONFIG = 'SET_API_CONFIG';
 export const SET_TABLE_TO_SAVE_API_DATA = 'SET_TABLE_TO_SAVE_API_DATA';
+export const USER_API_STATUS_START = 'USER_API_STATUS_START';
+export const USER_API_STATUS_SUCCESS = 'USER_API_STATUS_SUCCESS';
+export const USER_API_STATUS_ERROR = 'USER_API_STATUS_ERROR';
+export const AIRTABLE_API_STATUS_RESET = 'AIRTABLE_API_STATUS_RESET';
+export const AIRTABLE_API_STATUS_START = 'AIRTABLE_API_STATUS_START';
+export const AIRTABLE_API_STATUS_SUCCESS = 'AIRTABLE_API_STATUS_SUCCESS';
+export const AIRTABLE_API_STATUS_ERROR = 'AIRTABLE_API_STATUS_ERROR';
 
 window.gc = globalConfig;
 
@@ -130,33 +137,55 @@ export function fetchData() {
             });
         }
 
+        dispatch({ type: USER_API_STATUS_START });
+        dispatch({ type: AIRTABLE_API_STATUS_RESET });
+
         promise.then((response) => {
                 if (!response.ok) {
                     if (isJson(response)) {
                         return response.json().then(err => {throw err});
                     } else {
-                        throw new Error({
+                        throw {
                             message: 'Response is not json',
-                            error: response
-                        })
+                            status: response.status,
+                            statusText: response.statusText
+                        }
                     }
                 }
                 console.log('response', response);
                 return response.json();
             })
-            .then((resultsJson) => {
+            .then(async (resultsJson) => {
+                dispatch({ type: USER_API_STATUS_SUCCESS });
                 console.log('resultsJson', resultsJson);
 
                 const parsedJson = parseJSONObject_(resultsJson)
                 console.log('parsedJson', parsedJson);
                 const formattedRecords = transformDataToAirtableRecordFormat(parsedJson);
-                saveDataToTable(formattedRecords, tableToSaveApiData);
+                try {
+                    dispatch({ type: AIRTABLE_API_STATUS_START });
+                    await saveDataToTable(formattedRecords, tableToSaveApiData);
+                    dispatch({ type: AIRTABLE_API_STATUS_SUCCESS });
+                } catch (e) {
+                    dispatch({
+                        type: AIRTABLE_API_STATUS_ERROR,
+                        payload: {
+                            error: e
+                        }
+                    });
+                }
 
                 return resultsJson;
             })
             .catch((error) => {
+                dispatch({
+                    type: USER_API_STATUS_ERROR,
+                    payload: {
+                        error
+                    }
+                });
                 console.log('error ', error);
-                throw error;
+                // throw error;
             });
         return promise;
     }

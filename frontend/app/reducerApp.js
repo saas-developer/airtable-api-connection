@@ -5,13 +5,20 @@ import {
     SET_DATA_PATH,
     SET_NAME_FOR_REQUEST,
     SET_TABLE_TO_SAVE_API_DATA,
-    SET_API_CONFIG
+    SET_API_CONFIG,
+    USER_API_STATUS_START,
+    USER_API_STATUS_SUCCESS,
+    USER_API_STATUS_ERROR,
+    AIRTABLE_API_STATUS_RESET,
+    AIRTABLE_API_STATUS_START,
+    AIRTABLE_API_STATUS_SUCCESS,
+    AIRTABLE_API_STATUS_ERROR
 } from './actionsApp';
 import { globalConfig } from '@airtable/blocks';
 import {
     getFirstRequest
 } from './utils/serializeRequests';
-
+import _get from 'lodash/get';
 // const url = globalConfig.get(['apiConfig', 'url']) || '';
 // const headers = globalConfig.get(['apiConfig', 'headers']) || [];
 
@@ -29,6 +36,16 @@ const defaultState = {
     busy: false,
     apiConfig: {
         ...savedRequest
+    },
+    userApiStatus: {
+        busy: false,
+        error: false,
+        success: false
+    },
+    airtableApiStatus: {
+        busy: false,
+        error: false,
+        success: false
     }
 }
 
@@ -46,6 +63,16 @@ export default function auth(state = defaultState, action) {
                 ...state,
                 apiConfig: {
                     ...action.payload
+                },
+                userApiStatus: {
+                    busy: false,
+                    error: false,
+                    success: false
+                },
+                airtableApiStatus: {
+                    busy: false,
+                    error: false,
+                    success: false
                 }
             }
         }
@@ -108,6 +135,101 @@ export default function auth(state = defaultState, action) {
                 }
             }
         }
+
+        case USER_API_STATUS_START: {
+            const userApiStatus = {
+                ...state.userApiStatus
+            }
+            userApiStatus.busy = true;
+            userApiStatus.success = false;
+            userApiStatus.error = null;
+
+            return {
+                ...state,
+                userApiStatus
+            }
+        }
+        case USER_API_STATUS_SUCCESS: {
+            const userApiStatus = {
+                ...state.userApiStatus
+            }
+            userApiStatus.busy = false;
+            userApiStatus.success = true;
+            userApiStatus.error = null;
+
+       return {
+                ...state,
+                userApiStatus
+            }
+        }
+        case USER_API_STATUS_ERROR: {
+            const userApiStatus = {
+                ...state.userApiStatus
+            }
+            userApiStatus.busy = false;
+            userApiStatus.success = false;
+            userApiStatus.error = _get(action, 'payload.error');
+
+            return {
+                ...state,
+                userApiStatus
+            }
+        }
+
+        case AIRTABLE_API_STATUS_RESET: {
+            const airtableApiStatus = {
+                ...state.airtableApiStatus
+            }
+            airtableApiStatus.busy = false;
+            airtableApiStatus.success = false;
+            airtableApiStatus.error = null;
+
+            return {
+                ...state,
+                airtableApiStatus
+            }
+        }
+
+        case AIRTABLE_API_STATUS_START: {
+            const airtableApiStatus = {
+                ...state.airtableApiStatus
+            }
+            airtableApiStatus.busy = true;
+            airtableApiStatus.success = false;
+            airtableApiStatus.error = null;
+
+            return {
+                ...state,
+                airtableApiStatus
+            }
+        }
+        case AIRTABLE_API_STATUS_SUCCESS: {
+            const airtableApiStatus = {
+                ...state.airtableApiStatus
+            }
+            airtableApiStatus.busy = false;
+            airtableApiStatus.success = true;
+            airtableApiStatus.error = null;
+
+            return {
+                ...state,
+                airtableApiStatus
+            }
+        }
+        case AIRTABLE_API_STATUS_ERROR: {
+            const airtableApiStatus = {
+                ...state.airtableApiStatus
+            }
+            airtableApiStatus.busy = false;
+            airtableApiStatus.success = false;
+            airtableApiStatus.error = _get(action, 'payload.error');;
+
+            return {
+                ...state,
+                airtableApiStatus
+            }
+        }
+
         default: return state;
     }
 }
