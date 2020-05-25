@@ -43,7 +43,7 @@ export default function App() {
                     eventKey="contact"
                     title="Contact"
                 >
-                    Stuff
+                    You can reach me at thepagemonk AT gmail DOT com
                 </Tab>
             </Tabs>
         </div>
