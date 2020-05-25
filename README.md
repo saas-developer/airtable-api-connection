@@ -9,6 +9,10 @@
 
 API Connection is a Custom Block developed on the Airtable platform.
 
+## Demo
+
+[![API Connection Intro](https://img.youtube.com/vi/TVawC9Ino90/0.jpg)](https://www.youtube.com/watch?v=TVawC9Ino90)
+
 ## Block Screenshot
 
 ![Api Connection](ApiConnection.png)
