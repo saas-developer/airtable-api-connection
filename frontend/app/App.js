@@ -9,6 +9,7 @@ import ApiConfig from './components/ApiConfig';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import SavedRequests from './components/savedRequests/SavedRequests';
+import GoogleOAuth from './components/oauth/GoogleOauth';
 
 export default function App() {
     const [activeTab, setActiveTab] = useState('requests');
@@ -20,6 +21,7 @@ export default function App() {
     return (
         <div className="container app-container">
             <h2 className="title">Api Connection</h2>
+            <GoogleOAuth />
             <hr></hr>
             <Tabs
                 activeKey={activeTab}
