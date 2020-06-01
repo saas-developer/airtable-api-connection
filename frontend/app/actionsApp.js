@@ -8,7 +8,11 @@ import _filter from 'lodash/filter';
 import { base } from '@airtable/blocks';
 import { FieldType } from '@airtable/blocks/models';
 import { parseJSONObject_ } from './utils/importJSONGoogleAppScript';
-import { saveRequestSync as saveRequestToGlobalConfigSync } from './utils/serializeRequests';
+import {
+    saveRequestSync as saveRequestToGlobalConfigSync,
+    deleteRequestSync as deleteRequestFromGlobalConfigSync,
+    getRequests
+} from './utils/serializeRequests';
 
 export const APP_BUSY = 'APP_BUSY';
 export const SET_API_URL = 'SET_API_URL';
@@ -17,6 +21,7 @@ export const SET_DATA_PATH = 'SET_DATA_PATH';
 export const SAVE_REQUEST = 'SAVE_REQUEST';
 export const SET_NAME_FOR_REQUEST = 'SET_NAME_FOR_REQUEST';
 export const SET_API_CONFIG = 'SET_API_CONFIG';
+export const DELETE_API_CONFIG = 'DELETE_API_CONFIG';
 export const SET_TABLE_TO_SAVE_API_DATA = 'SET_TABLE_TO_SAVE_API_DATA';
 export const USER_API_STATUS_START = 'USER_API_STATUS_START';
 export const USER_API_STATUS_SUCCESS = 'USER_API_STATUS_SUCCESS';
@@ -25,8 +30,13 @@ export const AIRTABLE_API_STATUS_RESET = 'AIRTABLE_API_STATUS_RESET';
 export const AIRTABLE_API_STATUS_START = 'AIRTABLE_API_STATUS_START';
 export const AIRTABLE_API_STATUS_SUCCESS = 'AIRTABLE_API_STATUS_SUCCESS';
 export const AIRTABLE_API_STATUS_ERROR = 'AIRTABLE_API_STATUS_ERROR';
+export const SET_SAVED_REQUESTS = 'SET_SAVED_REQUESTS';
 
 window.gc = globalConfig;
+
+export function initialize() {
+    return setSavedRequests(getRequests());
+}
 
 export function setBusy(payload) {
     return {
@@ -46,6 +56,17 @@ export function setApiConfig(payload) {
     return {
         type: SET_API_CONFIG,
         payload
+    }
+}
+
+export function deleteApiConfig(payload) {
+    return (dispatch, getState) => {
+        deleteRequestFromGlobalConfigSync(payload);
+        dispatch({
+            type: DELETE_API_CONFIG,
+            payload
+        });
+        dispatch(setSavedRequests(getRequests()));
     }
 }
 
@@ -94,11 +115,19 @@ export function saveRequest() {
 
         saveRequestToGlobalConfigSync(apiConfig);
         dispatch(setApiConfig(apiConfig));
+        dispatch(setSavedRequests(getRequests()));
 
         return {
             type: SAVE_REQUEST
         }
 
+    }
+}
+
+export function setSavedRequests(payload) {
+    return {
+        type: SET_SAVED_REQUESTS,
+        payload
     }
 }
 

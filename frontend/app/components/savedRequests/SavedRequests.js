@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getRequests } from '../../utils/serializeRequests';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import _map from 'lodash/map';
 import _isEmpty from 'lodash/isEmpty';
 import {
-    setApiConfig
+    setApiConfig,
+    deleteApiConfig
 } from '../../actionsApp';
 
 export default function SavedRequests({ setActiveTab }) {
     const dispatch = useDispatch();
-    const savedRequests = getRequests();
+    const savedRequests = useSelector((state) => {
+        return state.app.savedRequests
+    });
 
     const handleCreateNewClick = () => {
         setActiveTab('api');
@@ -22,8 +24,12 @@ export default function SavedRequests({ setActiveTab }) {
         dispatch(setApiConfig(request));
     }
 
+    const handleDeleteClick = (request) => {
+        dispatch(deleteApiConfig(request));
+    }
+
     return (
-        <div>
+        <div className="saved-requests">
             { _isEmpty(savedRequests) &&
                 <div>
                     <p>You do not have any saved requests.</p>
@@ -31,14 +37,22 @@ export default function SavedRequests({ setActiveTab }) {
             }
 
 
-            <div>
+            <div className="list">
                 {
                     _map(savedRequests, (request, index) => {
                         return (
-                            <div key={index}>
-                                <Button
-                                    onClick={() => handleRequestNameClick(request)}
-                                    variant="link">{request.requestName}</Button>
+                            <div key={index} className="list-item">
+                                <div>
+                                    <Button
+                                        className="request-name"
+                                        onClick={() => handleRequestNameClick(request)}
+                                        variant="link">{request.requestName}</Button>
+                                </div>
+                                <div>
+                                    <Button
+                                        variant="link"
+                                        onClick={() => handleDeleteClick(request)}>Delete</Button>
+                                </div>
                             </div>
                         )
                     })

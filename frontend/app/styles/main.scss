@@ -92,5 +92,31 @@ body {
     .table-picker {
         background: $blue-grey-200;
     }
+
+    .saved-requests {
+        .list {
+            .list-item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                background: white;
+                border-radius: 0 0.5rem 0.5rem 0.5rem;
+                margin-top: 1rem;
+                min-height: 3rem;
+                padding: 8px;
+                box-shadow: 0.25rem 0.25rem 0.6rem rgba(0,0,0,0.05), 0 0.5rem 1.125rem rgba(75,0,0,0.05);
+
+                .request-name {
+                    color: black;
+                    font-size: 20px;
+                }
+
+                .delete-btn {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
 }
 

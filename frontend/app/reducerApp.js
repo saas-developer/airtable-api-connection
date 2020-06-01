@@ -6,13 +6,15 @@ import {
     SET_NAME_FOR_REQUEST,
     SET_TABLE_TO_SAVE_API_DATA,
     SET_API_CONFIG,
+    DELETE_API_CONFIG,
     USER_API_STATUS_START,
     USER_API_STATUS_SUCCESS,
     USER_API_STATUS_ERROR,
     AIRTABLE_API_STATUS_RESET,
     AIRTABLE_API_STATUS_START,
     AIRTABLE_API_STATUS_SUCCESS,
-    AIRTABLE_API_STATUS_ERROR
+    AIRTABLE_API_STATUS_ERROR,
+    SET_SAVED_REQUESTS
 } from './actionsApp';
 import { globalConfig } from '@airtable/blocks';
 import {
@@ -51,6 +53,17 @@ const defaultState = {
 
 export default function auth(state = defaultState, action) {
     switch(action.type) {
+        case SET_SAVED_REQUESTS: {
+            const savedRequests = action.payload
+            const newState = {
+                ...state
+            };
+            newState.savedRequests = {
+                ...savedRequests
+            }
+            return newState;
+        }
+
         case APP_BUSY: {
             return {
                 ...state,
@@ -74,6 +87,12 @@ export default function auth(state = defaultState, action) {
                     error: false,
                     success: false
                 }
+            }
+        }
+
+        case DELETE_API_CONFIG: {
+            return {
+                ...state
             }
         }
 

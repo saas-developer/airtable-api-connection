@@ -16,13 +16,13 @@ export function getRequests() {
 }
 
 export function saveRequestSync(apiConfig) {
-    // const requestName = apiConfig.requestName;
 
     let uuid = apiConfig.uuid;
     if (!uuid) {
         apiConfig.uuid = uuidv4();
         uuid = apiConfig.uuid;
     }
+    apiConfig.requestName = apiConfig.requestName || apiConfig.uuid;
 
     const savedRequests = globalConfig.get(['savedRequests']) || [];
 
@@ -43,4 +43,16 @@ export function saveRequestSync(apiConfig) {
 
         return 'saved';
     }   
+}
+
+export function deleteRequestSync(apiConfig) {
+    let uuid = apiConfig.uuid;
+    const savedRequests = globalConfig.get(['savedRequests']) || [];
+    const index = _findIndex(savedRequests, (request) => {
+        return request.uuid === uuid;
+    });
+
+    savedRequests.splice(index, 1);
+    globalConfig.setAsync(['savedRequests'], savedRequests);
+    return 'deleted';
 }

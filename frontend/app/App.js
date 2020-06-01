@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchData } from './actionsApp';
+import { fetchData, initialize } from './actionsApp';
 import ApiUrl from './components/ApiUrl';
 import ApiHeader from './components/ApiHeaders';
 import TableToSaveApiData from './components/TableToSaveApiData';
@@ -16,6 +16,10 @@ export default function App() {
     const getData = () => {
         dispatch(fetchData());
     }
+
+    useEffect(() => {
+        dispatch(initialize())
+    }, [])
 
     return (
         <div className="container app-container">
