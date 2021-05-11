@@ -2,7 +2,7 @@
     "dependencies": {
         "@airtable/blocks": "0.0.48",
         "bootstrap": "^4.4.1",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.21",
         "react": "^16.13.0",
         "react-bootstrap": "^1.0.1",
         "react-dom": "^16.13.0",
