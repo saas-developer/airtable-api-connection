@@ -49,8 +49,9 @@ export function setApiConfig(payload) {
     if (_isEmpty(payload)) {
         payload = {
             url: '',
+            JSON.stringify(
             headers: [],
-            requestName: ''
+            requestName: '')
         }
     }
     return {
