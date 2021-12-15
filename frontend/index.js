@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import store from './app/store/configureStore';
 import App from './app/App';
 import { loadCSSFromURLAsync, loadCSSFromString } from '@airtable/blocks/ui';
-import styles from './app/styles/main.js'
+import styles from './app/styles/main.scss'
 loadCSSFromURLAsync('https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css');
 loadCSSFromString(styles);
 
