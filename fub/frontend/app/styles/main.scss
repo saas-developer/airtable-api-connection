@@ -1,0 +1,122 @@
+// Palette 15
+
+// Primary
+$blue-050: #DCEEFB;
+$blue-100: #B6E0FE;
+$blue-200: #84C5F4;
+$blue-300: #62B0E8;
+$blue-400: #4098D7;
+$blue-500: #2680C2;
+$blue-600: #186FAF;
+$blue-700: #0F609B;
+$blue-800: #0A558C;
+$blue-900: #003E6B;  
+
+// Neutrals
+$blue-grey-050: #F0F4F8;
+$blue-grey-100: #D9E2EC;
+$blue-grey-200: #BCCCDC;
+$blue-grey-300: #9FB3C8;
+$blue-grey-400: #829AB1;
+$blue-grey-500: #627D98;
+$blue-grey-600: #486581;
+$blue-grey-700: #334E68;
+$blue-grey-800: #243B53;
+$blue-grey-900: #102A43;  
+
+// Supporting
+$teal-vivid-050: #F0FCF9;
+$teal-vivid-100: #C6F7E9;
+$teal-vivid-200: #8EEDD1;
+$teal-vivid-300: #5FE3C0;
+$teal-vivid-400: #2DCCA7;
+$teal-vivid-500: #17B897;
+$teal-vivid-600: #079A82;
+$teal-vivid-700: #048271;
+$teal-vivid-800: #016457;
+$teal-vivid-900: #004440;  
+
+$red-050: #FFEEEE;
+$red-100: #FACDCD;
+$red-200: #F29B9B;
+$red-300: #E66A6A;
+$red-400: #D64545;
+$red-500: #BA2525;
+$red-600: #A61B1B;
+$red-700: #911111;
+$red-800: #780A0A;
+$red-900: #610404;  
+
+$yellow-050: #FFFAEB;
+$yellow-100: #FCEFC7;
+$yellow-200: #F8E3A3;
+$yellow-300: #F9DA8B;
+$yellow-400: #F7D070;
+$yellow-500: #E9B949;
+$yellow-600: #C99A2E;
+$yellow-700: #A27C1A;
+$yellow-800: #7C5E10;
+$yellow-900: #513C06;
+
+
+body {
+    background: $blue-050;
+    padding: 20px;
+}
+.app-container {
+    padding-top: 20px;
+    // background: white;
+    min-height: 100vh;
+    width: 100%;
+
+    .title {
+        color: $blue-900;
+    }
+
+    label {
+        margin-top: 0.5rem;
+        text-transform: uppercase;
+    }
+
+    nav {
+        a {
+            color: $blue-900;
+        }
+    }
+
+    input {
+        background: $blue-grey-200;
+        color: $blue-700;
+    }
+
+    .table-picker {
+        background: $blue-grey-200;
+    }
+
+    .saved-requests {
+        .list {
+            .list-item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                background: white;
+                border-radius: 0 0.5rem 0.5rem 0.5rem;
+                margin-top: 1rem;
+                min-height: 3rem;
+                padding: 8px;
+                box-shadow: 0.25rem 0.25rem 0.6rem rgba(0,0,0,0.05), 0 0.5rem 1.125rem rgba(75,0,0,0.05);
+
+                .request-name {
+                    color: black;
+                    font-size: 20px;
+                }
+
+                .delete-btn {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+}
+

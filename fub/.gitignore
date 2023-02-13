@@ -1,0 +1,5 @@
+/node_modules
+/.airtableblocksrc.json
+/build
+frontend/app/styles/main.js
+.env
